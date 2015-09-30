@@ -4,13 +4,16 @@ enable :sessions # sessions to store computer guess till user guesses the right 
 
 post '/guess' do
   guess = JSON.parse(request.body.read)["guess"].to_i
-  result = check_user_guess guess
+  message = check_user_guess guess
 
+  session[:turns]+=1
+  puts session[:turns]
   puts session[:server_guess] # see what comp guess is for testng
-  {result: result}.to_json # create a json obj from hash to send result
+  {result: message, turns: session[:turns]}.to_json # create a json obj from hash to send result
 end
 
 get '/' do
+  session[:turns] = 0
   session[:server_guess] = random_num # store computer/server guess for session
   erb :index # render erb template on get "/"
 end
@@ -18,24 +21,24 @@ end
 
 def random_num 
   comp_num = Random.new
-  comp_num.rand(100)
+  comp_num.rand(20)
 end
 
 def check_user_guess user_guess # validates the user's input and responds, valid or no
-  if user_guess.between?(1, 100)
-    result = compare_guesses session[:server_guess], user_guess 
+  if user_guess.between?(1, 20)
+    compare_guesses session[:server_guess], user_guess 
   else
-    result = "please enter a number 1-100"
+    "Please enter a number 1-20"
   end
 end
 
 def compare_guesses computer_guess, user_guess
   if user_guess == computer_guess
     session[:server_guess] = random_num
-    "user wins"
-  elsif user_guess.between?(computer_guess, computer_guess+15) || user_guess.between?(computer_guess-15, computer_guess)
-    "you're close!"
+    "User wins! Enter a number to play again!"
+  elsif user_guess.between?(computer_guess, computer_guess+3) || user_guess.between?(computer_guess-3, computer_guess)
+    "You're close!"
   else
-    "you're cold!"
+    "You're cold!"
   end
 end

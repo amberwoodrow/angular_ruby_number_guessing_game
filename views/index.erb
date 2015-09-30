@@ -6,22 +6,27 @@
   </head>
   <body>
 
-    <div class="container" ng-controller="appController">
+    <section class="container" ng-controller="appController">
       <h1>Number Guessing Game!</h1>
       <form>
-        <div class="form-group">
-          <label for="userGuess">Enter a number 1-100</label>
+        <section class="form-group">
+          <label for="userGuess">Enter a number 1-20</label>
           <input type="text" class="form-control" ng-model="guess" placeholder="0">
-        </div>
+        </section>
         <button class="btn btn-default" ng-click="takeGuess()">Submit</button>
       </form>
 
-      <p>
+      <h4>
         {{result}}
-      </p>
-    </div>
+      </h4>
+
+      <p>Turns: {{turns}}</p>
+    </section>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
     <script src="main.js"></script>
   </body>
 </html>
+
+<!-- todo: reset turns
+don't count turns on invalid entry -->
